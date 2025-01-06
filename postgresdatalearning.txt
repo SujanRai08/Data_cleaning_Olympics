@@ -1,0 +1,65 @@
+update tbl_students set date_of_birth = '2004-04-08' where date_of_birth = '2004-05-08';
+select * from tbl_students order by id ASC;
+ALTER TABLE tbl_students add Column Salary BIGINT null;
+update tbl_students set salary = 100000 where id = 11;
+truncate tbl_students;
+INSERT INTO tbl_students (first_name, last_name, date_of_birth,salary)
+VALUES
+    ('Sujan', 'Rai', '2004-05-08',1000000),
+    ('Anisha', 'Sharma', '2002-03-15',5000000),
+    ('Bikash', 'Thapa', '2001-12-20',100000),
+    ('Prakash', 'Gurung', '2003-07-22',40004),
+    ('Ramesh', 'Khadka', '2000-01-10',500005),
+    ('Sneha', 'Lama', '1999-11-05',900000),
+    ('Kiran', 'Acharya', '2001-06-18',20000),
+    ('Mina', 'Karki', '2003-09-09',50000),
+    ('Roshan', 'Magar', '2002-02-25',350000),
+    ('Sita', 'Tamang', '1998-10-30',75000);
+
+select pg_get_serial_sequence('tbl_students','id');
+SELECT setval('tbl_students_id_seq', 1, false);
+SELECT nextval('tbl_students_id_seq');
+select * from tbl_students where first_name ='Sujan' AND salary = 1000000;
+select salary from tbl_students order by salary desc limit 1 offset 1;
+SELECT first_name, salary AS second_highest_salary
+FROM tbl_students
+WHERE salary = (
+    SELECT MAX(salary) 
+    FROM tbl_students 
+    WHERE salary < (SELECT MAX(salary) FROM tbl_students)
+);
+select max(salary) from tbl_students;
+update tbl_students set salary = 50000000 where first_name = 'Sujan';
+select first_name, avg(salary) as average_salary from tbl_students
+group by first_name
+having avg(salary)>500000;
+select * from tbl_students order by id ASC limit 5 offset 3 ;
+select * from tbl_students order by id asc offset 5 fetch first 5 row only ;
+alter table tbl_students 
+rename column first_name to firstname;
+alter table tbl_students 
+rename column last_name to lastname;
+select * from tbl_students where date_of_birth between Date '2001-01-01' AND '2015-01-02';
+select * from tbl_students where lastname like '%a';
+select lastname,count(*) from tbl_students group by lastname;
+select lastname,count(*) from tbl_students group by lastname having count(*) = 1 order by lastname asc;
+select min(salary) as min_salary from tbl_students;
+select firstname, AVG(salary) as AVG_salary from tbl_students group by firstname order by firstname asc;
+select sum(salary) from tbl_students;
+select firstname,lastname,salary,Round((salary-salary*.10),2) as discount_salary from tbl_students;
+select coalesce(null, 1)  as number_;
+insert into tbl_students (firstname,lastname,date_of_birth) Values ('Rajanna','shrestha','2004-01-09');
+select coalesce(salary,1) from tbl_students;
+select now()::Date;
+select now()::Time;
+alter table tbl_students 
+add column time_stamp timestamp;
+select (now()::Date - INTERVAL  '10 YEAR')::Date;
+select now() - INTERVAL  '10 Month';
+select extract(year from Now());
+select extract(Month from Now());
+select extract(Day from Now());
+select extract(Dow from Now()); 
+select extract(Century from Now()); 
+select id,firstname,lastname,date_of_birth,AGE(Now()::Date, date_of_birth) as age from tbl_students;
+select firstname,salary from tbl_students where salary is not null order by salary desc limit 1 offset 1;
